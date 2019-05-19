@@ -1,2 +1,4 @@
-# smartixx-snips
-Code repository for scripts to operate with SNIPS assistant
+# **SmartiXX SNIPS**
+### Repository for my own SNIPS voice assistant python scripts and any other dependencies
+
+****
