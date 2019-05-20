@@ -15,6 +15,7 @@ from lib.snips_airly import snips_airly
 from lib.snips_ambientsoundmusic import snips_ambientsoundmusic
 from lib.snips_system import snips_system
 from lib.snips_timedate import snips_timedate
+from lib.snips_onlineradio import snips_onlineradio
 
 # Dont change:
 conf = None
@@ -24,6 +25,7 @@ snips_airly_obj = None
 snips_ambientsoundmusic_obj = None
 snips_system_obj = None
 snips_timedate_obj = None
+snips_onlineradio_obj = None
 
 # Configuration file:
 CONFIG_INI = "config.ini"
@@ -95,6 +97,7 @@ def initialize_objects():
 	global snips_ambientsoundmusic_obj
 	global snips_system_obj
 	global snips_timedate_obj
+	global snips_onlineradio_obj
 	# Create objects:
 	if conf['airly']['enabled'] == 'true':
 		snips_airly_obj = snips_airly(logger, conf)
@@ -104,6 +107,8 @@ def initialize_objects():
 		snips_system_obj = snips_system(logger, conf)
 	if conf['datetime']['enabled'] == 'true':
 		snips_timedate_obj = snips_timedate(logger, conf)
+	if conf['onlineradio']['enabled'] == 'true':
+		snips_onlineradio_obj = snips_onlineradio(logger, conf)
 	return
 
 # +----------------------------------+
@@ -114,6 +119,7 @@ def intent_received(hermes, intent_message):
 	global snips_ambientsoundmusic_obj
 	global snips_system_obj
 	global snips_timedate_obj
+	global snips_onlineradio_obj
 	
 	sentence = "Sorry, I can't help you with that"
 
@@ -149,6 +155,8 @@ def intent_received(hermes, intent_message):
 	if intent_message.intent.intent_name == 'vascojdb:ListAmbientSounds':
 		if conf['ambientsoundmusic']['enabled'] == 'true':
 			sentence = snips_ambientsoundmusic_obj.listSounds()
+		else:
+			logger.debug('Ambient sounds service is disabled.')
 			
 	# ========== PlayMusic ==========
 	if intent_message.intent.intent_name == 'vascojdb:PlayMusic':
@@ -166,11 +174,19 @@ def intent_received(hermes, intent_message):
 	if intent_message.intent.intent_name == 'vascojdb:ListMusics':
 		if conf['ambientsoundmusic']['enabled'] == 'true':
 			sentence = snips_ambientsoundmusic_obj.listMusic()
+		else:
+			logger.debug('Ambient sounds service is disabled.')
 	
 	# ========== AudioOff ==========
 	if intent_message.intent.intent_name == 'vascojdb:AudioOff':
 		if conf['ambientsoundmusic']['enabled'] == 'true':
 			sentence = snips_ambientsoundmusic_obj.stop()
+		else:
+			logger.debug('Ambient sounds service is disabled.')
+		if conf['onlineradio']['enabled'] == 'true':
+			sentence = snips_onlineradio_obj.stop()
+		else:
+			logger.debug('Online radio service is disabled.')
 
 	# ========== VolumeDown ==========
 	if intent_message.intent.intent_name == 'vascojdb:VolumeDown':
@@ -181,6 +197,8 @@ def intent_received(hermes, intent_message):
 			if value_slot is not None:
 				value = value_slot.value
 			sentence = snips_system_obj.volumeDown(value)
+		else:
+			logger.debug('System service is disabled.')
 
 	# ========== VolumeUp ==========
 	if intent_message.intent.intent_name == 'vascojdb:VolumeUp':
@@ -191,6 +209,8 @@ def intent_received(hermes, intent_message):
 			if value_slot is not None:
 				value = value_slot.value
 			sentence = snips_system_obj.volumeUp(value)
+		else:
+			logger.debug('System service is disabled.')
 	
 	# ========== VolumeSet ==========
 	if intent_message.intent.intent_name == 'vascojdb:VolumeSet':
@@ -201,32 +221,57 @@ def intent_received(hermes, intent_message):
 			if value_slot is not None:
 				value = value_slot.value
 			sentence = snips_system_obj.volumeSet(value)
+		else:
+			logger.debug('System service is disabled.')
 	
 	# ========== ScreenOn ==========
 	if intent_message.intent.intent_name == 'vascojdb:ScreenOn':
 		if conf['system']['enabled'] == 'true':
 			sentence = snips_system_obj.screenOn()
+		else:
+			logger.debug('System service is disabled.')
 	
 	# ========== ScreenOff ==========
 	if intent_message.intent.intent_name == 'vascojdb:ScreenOff':
 		if conf['system']['enabled'] == 'true':
 			sentence = snips_system_obj.screenOff()
+		else:
+			logger.debug('System service is disabled.')
 			
 	# ========== SystemInfo ==========
 	if intent_message.intent.intent_name == 'vascojdb:SystemInfo':
 		if conf['system']['enabled'] == 'true':
 			sentence = snips_system_obj.systemInfo()
+		else:
+			logger.debug('System service is disabled.')
 			
 	# ========== GetDate ==========
 	if intent_message.intent.intent_name == 'vascojdb:GetDate':
 		if conf['datetime']['enabled'] == 'true':
 			sentence = snips_timedate_obj.getDate()
+		else:
+			logger.debug('Date and time service is disabled.')
 			
 	# ========== GetTime ==========
 	if intent_message.intent.intent_name == 'vascojdb:GetTime':
 		if conf['datetime']['enabled'] == 'true':
 			sentence = snips_timedate_obj.getTime()
+		else:
+			logger.debug('Date and time service is disabled.')
 			
+	# ========== RadioOn ==========
+	if intent_message.intent.intent_name == 'vascojdb:RadioOn':
+		if conf['onlineradio']['enabled'] == 'true':
+			# Check if we have a station specified:
+			station = None
+			station_slot = intent_message.slots.radio_name.first()
+			if station_slot is not None:
+				station = station_slot.value
+			sentence = snips_onlineradio_obj.radioOn(station)
+		else:
+			logger.debug('Online radio service is disabled.')
+	
+	# ========== PUBLISH AND END ==========	
 	hermes.publish_end_session(intent_message.session_id, sentence)
 
 

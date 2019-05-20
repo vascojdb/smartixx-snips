@@ -36,7 +36,7 @@ class snips_ambientsoundmusic:
 				
 				# Make sure all other instances of mpg123 are killed:
 				os.system('killall /usr/bin/mpg123 2>/dev/null')
-				self.logger.info('Stopping any instances of mpg123')
+				self.logger.debug('Stopping any instances of mpg123')
 				
 				# Play the sounds after a short delay (to give time for the TTS to speak):
 				os.system('(sleep 5 && /usr/bin/mpg123 --scale 8000 -Zq -o alsa {}/*{}_* &)'.format(self.sounds_path, type.capitalize()))
@@ -86,7 +86,7 @@ class snips_ambientsoundmusic:
 				
 				# Make sure all other instances of mpg123 are killed:
 				os.system('killall /usr/bin/mpg123 2>/dev/null')
-				self.logger.info('Stopping any instances of mpg123')
+				self.logger.debug('Stopping any instances of mpg123')
 				
 				# Play the sounds aftre a short delay (to give time for the TTS to speak):
 				os.system('(sleep 5 && /usr/bin/mpg123 --scale 8000 -Zq -o alsa {}/*{}_* &)'.format(self.music_path, type.capitalize()))

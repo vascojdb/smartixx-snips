@@ -15,7 +15,7 @@
 
 import os
 import random
-import commands
+#import commands
 
 class snips_system:
 	def __init__(self, logger, conf):
@@ -80,7 +80,7 @@ class snips_system:
 		
 	def systemInfo(self):
 		self.logger.info('Getting system information...')
-		
+
 		uptime_tts = 'System is up for {}. '.format(commands.getstatusoutput('uptime -p')[1].replace('up ',''))
 		cpu_temp_tts = 'CPU temperature is {} degrees. '.format(commands.getstatusoutput('/opt/vc/bin/vcgencmd measure_temp')[1].replace('temp=','').split('.')[0])
 		total_ram = int(commands.getstatusoutput('free -t | grep "Total" | awk \'{print $2}\'')[1])
