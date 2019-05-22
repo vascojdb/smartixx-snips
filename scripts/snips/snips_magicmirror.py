@@ -16,6 +16,7 @@ from lib.snips_ambientsoundmusic import snips_ambientsoundmusic
 from lib.snips_system import snips_system
 from lib.snips_timedate import snips_timedate
 from lib.snips_onlineradio import snips_onlineradio
+from lib.snips_openweather import snips_openweather
 
 # Dont change:
 conf = None
@@ -26,6 +27,7 @@ snips_ambientsoundmusic_obj = None
 snips_system_obj = None
 snips_timedate_obj = None
 snips_onlineradio_obj = None
+snips_openweather_obj = None
 
 # Configuration file:
 CONFIG_INI = "config.ini"
@@ -98,6 +100,8 @@ def initialize_objects():
 	global snips_system_obj
 	global snips_timedate_obj
 	global snips_onlineradio_obj
+	global snips_openweather_obj
+	
 	# Create objects:
 	if conf['airly']['enabled'] == 'true':
 		snips_airly_obj = snips_airly(logger, conf)
@@ -109,6 +113,8 @@ def initialize_objects():
 		snips_timedate_obj = snips_timedate(logger, conf)
 	if conf['onlineradio']['enabled'] == 'true':
 		snips_onlineradio_obj = snips_onlineradio(logger, conf)
+	if conf['openweather']['enabled'] == 'true':
+		snips_openweather_obj = snips_openweather(logger, conf)
 	return
 
 # +----------------------------------+
@@ -120,6 +126,7 @@ def intent_received(hermes, intent_message):
 	global snips_system_obj
 	global snips_timedate_obj
 	global snips_onlineradio_obj
+	global snips_openweather_obj
 	
 	sentence = "Sorry, I can't help you with that"
 
@@ -270,6 +277,20 @@ def intent_received(hermes, intent_message):
 			sentence = snips_onlineradio_obj.radioOn(station)
 		else:
 			logger.debug('Online radio service is disabled.')
+	
+	# ========== GetSmogLevels ==========
+	if intent_message.intent.intent_name == 'vascojdb:GetWeather':
+		if conf['openweather']['enabled'] == 'true':
+			# Location defaults to home if no slots are provided:
+			location = 'home'
+			# Check if we have another location specified:
+			location_slot = intent_message.slots.forecast_locality.first()
+			if location_slot is not None:
+				# Update the location with the value on the slot:
+				location = location_slot.value
+			sentence = snips_openweather_obj.getWeather(location)
+		else:
+			logger.debug('OpenWeather service is disabled.')
 	
 	# ========== PUBLISH AND END ==========	
 	hermes.publish_end_session(intent_message.session_id, sentence)

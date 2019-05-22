@@ -15,7 +15,7 @@
 
 import os
 import random
-#import commands
+import commands
 
 class snips_system:
 	def __init__(self, logger, conf):
@@ -81,6 +81,9 @@ class snips_system:
 	def systemInfo(self):
 		self.logger.info('Getting system information...')
 
+		hostname_tts = 'My hostname is {}. '.format(commands.getstatusoutput('hostname')[1])
+		myip_tts = 'My IP is {}. '.format(commands.getstatusoutput('ip addr show wlan0 | grep "inet " | awk \'{print $2}\'')[1].split('/')[0])
+
 		uptime_tts = 'System is up for {}. '.format(commands.getstatusoutput('uptime -p')[1].replace('up ',''))
 		cpu_temp_tts = 'CPU temperature is {} degrees. '.format(commands.getstatusoutput('/opt/vc/bin/vcgencmd measure_temp')[1].replace('temp=','').split('.')[0])
 		total_ram = int(commands.getstatusoutput('free -t | grep "Total" | awk \'{print $2}\'')[1])
@@ -89,6 +92,6 @@ class snips_system:
 		used_hdd_tts = 'Used disk space is {} percent. '.format(commands.getstatusoutput('df -h | grep "/dev/root" | awk \'{print $5}\'')[1].replace('%',''))
 	
 		# Build answer:
-		tts = uptime_tts + cpu_temp_tts + used_ram_tts + used_hdd_tts
+		tts = hostname_tts + myip_tts + uptime_tts + cpu_temp_tts + used_ram_tts + used_hdd_tts
 		self.logger.debug('Answering: {}'.format(tts))
 		return tts

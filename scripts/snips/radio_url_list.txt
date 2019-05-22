@@ -1,1 +1,34 @@
 # Add here your radio stations and URLs in the format: <station_name>;<language>;<url>
+# Polish:
+RMF FM;Polish;http://195.150.20.242:8000/rmf_fm
+RMF Classic;Polish;http://195.150.20.242:8000/rmf_classic
+RMF Celtic;Polish;http://195.150.20.242:8000/rmf_celtic
+RMF Chillout;Polish;http://195.150.20.242:8000/rmf_chillout
+RMF Chopin;Polish;http://195.150.20.242:8000/rmf_chopin
+RMF Classic Rock;Polish;http://195.150.20.242:8000/rmf_classic_rock_vt
+RMF Club;Polish;http://195.150.20.242:8000/rmf_club
+RMF Dance;Polish;http://195.150.20.242:8000/rmf_dance
+RMF Funk;Polish;http://195.150.20.242:8000/rmf_funk
+RMF Game Music;Polish;http://195.150.20.242:8000/rmf_gamemusic
+RMF Gold;Polish;http://195.150.20.242:8000/rmf_gold
+RMF Hard Heavy;Polish;http://195.150.20.242:8000/rmf_hard_heavy
+RMF Latino;Polish;http://195.150.20.242:8000/rmf_latino
+RMF Maxxx;Polish;http://195.150.20.242:8000/rmf_maxxx
+RMF Classical;Polish;http://195.150.20.242:8000/rmf_muzyka_klasyczna
+RMF Party;Polish;http://195.150.20.242:8000/rmf_party
+RMF Rock;Polish;http://195.150.20.242:8000/rmf_rock
+RMF Jazz;Polish;http://195.150.20.242:8000/rmf_smooth_jazz
+RMF Sea Shanty;Polish;http://195.150.20.242:8000/rmf_szanty
+
+# Portuguese:
+Antena one;Portugal;http://radiocast.rtp.pt/antena180a.mp3
+Antena two;Portugal;http://radiocast.rtp.pt/antena280a.mp3
+Antena three;Portugal;http://radiocast.rtp.pt/antena380a.mp3
+RFM;Portugal;http://62.48.143.113/RFM_SC
+Cidade FM;Portugal;http://node-01.informativeaudio.com/ukwv9ant7f5tv
+Radio Renascenca;Portugal;http://62.48.143.105/RADIO_RENASCENCA_SC
+
+# World:
+Deep House;Swiss;http://strm112.1.fm/deephouse_mobile_mp3
+House;German;https://stream.laut.fm/deepahouse
+Coffe;German;http://mp3channels.webradio.de/coffee
